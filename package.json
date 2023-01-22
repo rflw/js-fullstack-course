@@ -1,13 +1,17 @@
 {
-  "name": "udemy-js-fullstack",
+  "name": "js-fullstack-course",
   "version": "1.0.0",
   "description": "Link: <https://www.udemy.com/course/learn-javascript-full-stack-from-scratch/>",
   "main": "index.js",
   "scripts": {
+    "build": "nodemon ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
 }
