@@ -4,7 +4,6 @@
   "description": "Link: <https://www.udemy.com/course/learn-javascript-full-stack-from-scratch/>",
   "main": "index.js",
   "scripts": {
-    "build": "nodemon ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,6 +14,7 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongodb": "^4.13.0"
   }
 }
