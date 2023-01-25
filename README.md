@@ -14,6 +14,20 @@
 
 - Node.js version: 14
 
+## Configuration
+
+### Database
+
+```sh
+docker container run --rm --name fullstack-mongodb -p 27017:27017 -v $(pwd)/db:/data/db -d mongo
+```
+
+Use MongoDB Compass (GUI) to manage database.
+
+```sh
+mongodb://localhost:27017
+```
+
 ### Issues
 
 ### Nodejs cannot import ES modules without file extension
