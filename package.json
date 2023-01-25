@@ -4,6 +4,7 @@
   "description": "Link: <https://www.udemy.com/course/learn-javascript-full-stack-from-scratch/>",
   "main": "index.js",
   "scripts": {
+    "app-todo": "nodemon ./app3-todo-app/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
