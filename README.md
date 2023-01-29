@@ -16,10 +16,10 @@
 
 ## Configuration
 
-### Database
+### Database - Run MongoDB
 
 ```sh
-docker container run --rm --name fullstack-mongodb -p 27017:27017 -v $(pwd)/db:/data/db -d mongo
+docker container run --rm --name fullstack-mongodb --network server-network -p 27017:27017 -v $(pwd)/db:/data/db -d mongo
 ```
 
 Use MongoDB Compass (GUI) to manage database.
