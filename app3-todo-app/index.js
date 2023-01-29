@@ -2,46 +2,47 @@ import { MongoClient } from 'mongodb';
 import express from 'express';
 
 const app = express();
+const dbName = 'TodoApp';
+const dbUrl = `mongodb://fullstack-mongodb/${dbName}`;
+const dbClient = new MongoClient(dbUrl);
+const todoItems = dbClient.db().collection('Items');
+
+const ROUTES = {
+  mainpage: '/',
+  newItem: '/create-item'
+}
 
 app.use(express.urlencoded({ extended: false }));
+app.listen(8000);
 
-app.get('/', (req, res) => {
+app.get(ROUTES.mainpage, async (req, res) => {
+  const mapToLI = item => `<li>${item.text}</li>`;
+  const listItems = await todoItems.find().toArray().then(
+    items => items.map(mapToLI).join('')
+  );
+
   res.send(`
-    <form action="/create-item" method="post">
+    <!DOCTYPE html>
+    <head>
+    </head>
+    <body>
+    <h1>TODO App</h1>
+    <form action="${ROUTES.newItem}" method="post">
       <div>
         <input type="text" name="newItem">
         <button type="submit">Add new item</button>
       </div>
     </form>
+    <ul>
+      ${listItems}
+    </ul>
+    </body>
+    </html>
   `);
 });
 
-app.post('/create-item', (req, res) => {
-  console.log(req.body.newItem)
-  res.send('Form submit.')
+app.post(ROUTES.newItem, async (req, res) => {
+  await todoItems.insertOne({ text: req.body.newItem });
+  res.redirect(ROUTES.mainpage);
 });
 
-app.listen(8000);
-
-
-// const url = "mongodb://fullstack-mongodb"
-
-// MongoClient.connect(
-//   url,
-//   {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-//   },
-//   (err, client) => {
-//     console.log('trying to connect');
-
-//     if (err) {
-//       return console.log(err)
-//     }
-
-//     // Specify the database you want to access
-//     const db = client.db('Example')
-
-//     console.log(`MongoDB Connected: ${url}`)
-//   }
-// )
