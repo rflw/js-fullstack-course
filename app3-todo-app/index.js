@@ -11,10 +11,12 @@ const publicDir = path.resolve(path.dirname('./app3-todo-app/index'), 'public');
 
 const ROUTES = {
   mainpage: '/',
-  newItem: '/create-item'
+  newItem: '/create-item',
+  updateItem: '/update-item'
 };
 
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use('/assets', express.static(publicDir)); // root for server files is /assets
 app.listen(8000);
 
@@ -57,3 +59,7 @@ app.post(ROUTES.newItem, async (req, res) => {
   res.redirect(ROUTES.mainpage);
 });
 
+app.post(ROUTES.updateItem, (req, res) => {
+  console.log('POST REQUEST', req.body);
+  res.send('Success');
+});
