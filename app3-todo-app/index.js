@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import express from 'express';
 import path from 'path';
 
@@ -11,8 +11,9 @@ const publicDir = path.resolve(path.dirname('./app3-todo-app/index'), 'public');
 
 const ROUTES = {
   mainpage: '/',
-  newItem: '/create-item',
-  updateItem: '/update-item'
+  createItem: '/create-item',
+  updateItem: '/update-item',
+  deleteItem: '/delete-item'
 };
 
 app.use(express.urlencoded({ extended: false }));
@@ -22,10 +23,10 @@ app.listen(8000);
 
 app.get(ROUTES.mainpage, async (req, res) => {
   const mapToLI = item => `
-    <li>
-      ${item.text}
-      <button onclick="editItemHandler()">Edit</button>
-      <button onclick="deleteItemHandler()">Delete</button>
+    <li id="${item._id}">
+      <span class="itemText">${item.text}</span>
+      <button onclick="editItemHandler('${item._id}')">Edit</button>
+      <button onclick="deleteItemHandler('${item._id}')">Delete</button>
     </li>
   `;
   const listItems = await todoItems.find().toArray().then(
@@ -38,7 +39,7 @@ app.get(ROUTES.mainpage, async (req, res) => {
     </head>
     <body>
     <h1>TODO App</h1>
-    <form action="${ROUTES.newItem}" method="post">
+    <form action="${ROUTES.createItem}" method="post">
       <div>
         <input type="text" name="newItem">
         <button type="submit">Add new item</button>
@@ -54,12 +55,26 @@ app.get(ROUTES.mainpage, async (req, res) => {
   `);
 });
 
-app.post(ROUTES.newItem, async (req, res) => {
+app.post(ROUTES.createItem, async (req, res) => {
   await todoItems.insertOne({ text: req.body.newItem });
   res.redirect(ROUTES.mainpage);
 });
 
-app.post(ROUTES.updateItem, (req, res) => {
-  console.log('POST REQUEST', req.body);
+app.post(ROUTES.updateItem, async (req, res) => {
+  await todoItems.findOneAndUpdate(
+    {_id: new ObjectId(req.body.id)},
+    {$set: {
+      text: req.body.text
+    }}
+  );
+
+  res.send('Success');
+});
+
+app.delete(ROUTES.deleteItem, async (req, res) => {
+  await todoItems.deleteOne(
+    {_id: new ObjectId(req.body.id)}
+  );
+
   res.send('Success');
 });
