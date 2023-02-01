@@ -39,7 +39,7 @@ app.get(ROUTES.mainpage, async (req, res) => {
     </head>
     <body>
     <h1>TODO App</h1>
-    <form action="${ROUTES.createItem}" method="post">
+    <form action="" method="post" onsubmit="submitHandler(event)">
       <div>
         <input type="text" name="newItem">
         <button type="submit">Add new item</button>
@@ -56,8 +56,13 @@ app.get(ROUTES.mainpage, async (req, res) => {
 });
 
 app.post(ROUTES.createItem, async (req, res) => {
-  await todoItems.insertOne({ text: req.body.newItem });
-  res.redirect(ROUTES.mainpage);
+  const _id = new ObjectId();
+  await todoItems.insertOne({
+    _id,
+    text: req.body.text
+  });
+
+  res.send(_id);
 });
 
 app.post(ROUTES.updateItem, async (req, res) => {

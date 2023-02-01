@@ -2,6 +2,30 @@ const requestHeaders = {
   'Content-Type': 'application/json'
 };
 
+function submitHandler(event) {
+  event.preventDefault();
+  const newItemValue = new FormData(event.target).get('newItem');
+  addItemHandler(newItemValue);
+}
+
+function addItemHandler(newValue) {
+  fetch('/create-item', {
+    method: 'POST',
+    headers: requestHeaders,
+    body: JSON.stringify({ text: newValue })
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return response.text();
+  }).then((id) => {
+    console.log('create item success', id);
+  }).catch(error => {
+    console.error('Fetch error', error);
+  })
+}
+
 function editItemHandler(id) {
   const listItem = getListItemElementText(id);
   const newValue = prompt('Enter new text', listItem.innerText);
