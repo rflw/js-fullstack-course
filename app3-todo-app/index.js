@@ -29,7 +29,10 @@ app.get(ROUTES.mainpage, async (req, res) => {
       <button onclick="deleteItemHandler('${item._id}')">Delete</button>
     </li>
   `;
-  const listItems = await todoItems.find().toArray().then(
+  const findOptions = {
+    sort: {_id: -1}
+  };
+  const listItems = await todoItems.find({}, findOptions).toArray().then(
     items => items.map(mapToLI).join('')
   );
 
@@ -45,7 +48,7 @@ app.get(ROUTES.mainpage, async (req, res) => {
         <button type="submit">Add new item</button>
       </div>
     </form>
-    <ul>
+    <ul id="items-list">
       ${listItems}
     </ul>
 
@@ -56,13 +59,9 @@ app.get(ROUTES.mainpage, async (req, res) => {
 });
 
 app.post(ROUTES.createItem, async (req, res) => {
-  const _id = new ObjectId();
-  await todoItems.insertOne({
-    _id,
-    text: req.body.text
-  });
-
-  res.send(_id);
+  console.log('request', req.body);
+  const dbData = await todoItems.insertOne({ text: req.body.text });
+  res.json({ _id: dbData.insertedId, text: req.body.text });
 });
 
 app.post(ROUTES.updateItem, async (req, res) => {

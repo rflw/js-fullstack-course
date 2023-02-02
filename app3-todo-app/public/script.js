@@ -2,13 +2,14 @@ const requestHeaders = {
   'Content-Type': 'application/json'
 };
 
-function submitHandler(event) {
+async function submitHandler(event) {
   event.preventDefault();
   const newItemValue = new FormData(event.target).get('newItem');
-  addItemHandler(newItemValue);
+  await addItemHandler(newItemValue);
+  event.target.reset();
 }
 
-function addItemHandler(newValue) {
+async function addItemHandler(newValue) {
   fetch('/create-item', {
     method: 'POST',
     headers: requestHeaders,
@@ -18,9 +19,10 @@ function addItemHandler(newValue) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    return response.text();
-  }).then((id) => {
-    console.log('create item success', id);
+    return response.json();
+  }).then((itemData) => {
+    document.getElementById('items-list')
+      .insertAdjacentHTML('afterbegin', itemTemplate(itemData));
   }).catch(error => {
     console.error('Fetch error', error);
   })
@@ -87,4 +89,13 @@ function getListItemElementText(id) {
 
 function getListItemElement(id) {
   return document.getElementById(id);
+}
+
+function itemTemplate(item) {
+  return `
+  <li id="${item._id}">
+    <span class="itemText">${item.text}</span>
+    <button onclick="editItemHandler('${item._id}')">Edit</button>
+    <button onclick="deleteItemHandler('${item._id}')">Delete</button>
+  </li>`;
 }
