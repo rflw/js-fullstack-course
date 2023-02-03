@@ -19,7 +19,23 @@ const ROUTES = {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/assets', express.static(publicDir)); // root for server files is /assets
+app.use(passwordProtected);
 app.listen(8000);
+
+function passwordProtected(req, res, next) {
+  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
+  // https://datatracker.ietf.org/doc/html/rfc7617#section-2
+  // sets header
+  res.set('WWW-Authenticate', 'Basic realm="Todo app');
+
+  // user: utest, passwd: ptest
+  const credentials = 'Basic dXRlc3Q6cHRlc3Q='; // base64-encoded credentials
+
+  // https://nodejs.org/api/http.html#messageheaders
+  req.headers.authorization === credentials
+    ? next()
+    : res.status(401).send('Authentication required.');
+}
 
 app.get(ROUTES.mainpage, async (req, res) => {
   const mapToLI = item => `
