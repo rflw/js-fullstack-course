@@ -2,7 +2,9 @@ import express from 'express';
 
 const app = express();
 
+
 // application settings
+app.use(express.static('public'));
 // see https://expressjs.com/en/api.html#app.set
 // see https://expressjs.com/en/api.html#app.settings.table
 app.set('views', 'views');
