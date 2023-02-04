@@ -1,6 +1,7 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import express from 'express';
 import path from 'path';
+import sanitizeHtml from 'sanitize-html';
 
 const app = express();
 const dbName = 'TodoApp';
@@ -76,8 +77,12 @@ app.get(ROUTES.mainpage, async (req, res) => {
 
 app.post(ROUTES.createItem, async (req, res) => {
   console.log('request', req.body);
-  const dbData = await todoItems.insertOne({ text: req.body.text });
-  res.json({ _id: dbData.insertedId, text: req.body.text });
+  const sanitizedText = sanitizeHtml(req.body.text, {
+    allowedTags: [],
+    allowedAttributes: {}
+  });
+  const dbData = await todoItems.insertOne({ text: sanitizedText });
+  res.json({ _id: dbData.insertedId, text: sanitizedText });
 });
 
 app.post(ROUTES.updateItem, async (req, res) => {
