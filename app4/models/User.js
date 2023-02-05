@@ -11,7 +11,23 @@ export default class User {
   }
 
   register() {
+    this.cleanUp();
     this.validate();
+  }
+
+  cleanUp() {
+    const isString = value => typeof(value) !== 'string';
+    const userDataEntries = Object.entries(this.data).map(([key, value]) => {
+      return [key, isString(value) ? '' : value];
+    });
+
+    const userData = Object.fromEntries(userDataEntries);
+
+    this.data = {
+      name: userData.name.trim().toLowerCase(),
+      email: userData.email.toLowerCase(),
+      password: userData.password
+    }
   }
 
   validate() {
