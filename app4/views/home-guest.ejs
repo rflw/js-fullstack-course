@@ -8,7 +8,21 @@
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  Hello :)
+  <header>
+    <h1>Home guest page</h1>
+  </header>
+  <main>
+    Main content
+  </main>
+  <aside>
+    <form action="/register" method="POST" id="register-form">
+      <div>
+        <label for="username">User name</label>
+        <input type="text" name="username" id="username">
+      </div>
+      <button type="submit">Sign up</button>
+    </form>
+  </aside>
   <footer>
     <%= new Date().getFullYear() %>
   </footer>

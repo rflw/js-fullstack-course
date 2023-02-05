@@ -1,10 +1,9 @@
 import express from 'express';
+import userController from './controllers/userController.js';
 
 const router = express.Router()
 
-router.get('/', (req, res) => {
-  // renders a view and sends the rendered HTML string to the client
-  res.render('home-guest');
-});
+router.get('/', userController.home);
+router.post('/register', userController.register);
 
 export default router;
