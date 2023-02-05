@@ -1,3 +1,5 @@
+import User from '../models/User.js';
+
 export function login() {
 
 }
@@ -7,6 +9,15 @@ export function logout() {
 }
 
 export function register(req, res) {
+  const user = new User(req.body);
+
+  user.register();
+
+  if (user.errors.length) {
+    
+    return;
+  }
+
   res.send('Reqister page');
 }
 
