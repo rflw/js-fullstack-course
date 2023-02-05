@@ -14,7 +14,7 @@ export function register(req, res) {
   user.register();
 
   if (user.errors.length) {
-    
+    res.send(user.errors.join());
     return;
   }
 

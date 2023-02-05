@@ -1,3 +1,5 @@
+import validator from 'validator';
+
 export default class User {
   constructor(data) {
     if (!Object.keys(data).length) {
@@ -13,19 +15,23 @@ export default class User {
   }
 
   validate() {
-    if (this.data.username === '') {
+    if (this.data.name === '') {
       this.errors.push('Missing user name');
     }
 
-    if (this.data.useremail === '') {
-      this.errors.push('Missing email');
+    if (!validator.isAlphanumeric(this.data.name)) {
+      this.errors.push('User is not alpha numeric');
     }
 
-    if (this.data.userpassword === '') {
+    if (!validator.isEmail(this.data.email)) {
+      this.errors.push('Incorrect email');
+    }
+
+    if (this.data.password === '') {
       this.errors.push('Missing password');
     }
 
-    if (this.data.userpassword > 0 && this.data.userpassword < 12) {
+    if (this.data.password > 0 && this.data.password < 12) {
       this.errors.push('Password: min length 12 characters')
     }
   }
