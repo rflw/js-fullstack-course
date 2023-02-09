@@ -5,6 +5,7 @@ import { dbConnect } from './db.js';
 const db = await dbConnect();
 const app = express();
 
+console.log('app init');
 app.use(express.urlencoded({ extended: false })); // allows to get access `req.body`, see https://expressjs.com/en/api.html#express.urlencoded
 app.use(express.json()); // allows to get access req.body based on JSON payloads, see https://expressjs.com/en/api.html#express.json
 app.use(express.static('public')); // sets static directory
@@ -17,7 +18,7 @@ app.set('view engine', 'ejs');
 
 app.listen(8000);
 
-export default {
+export {
   db,
   app
 };

@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { UsersCollection } from '../db.js';
+import { db } from '../app.js';
 
 export default class User {
   constructor(data) {
@@ -54,8 +54,10 @@ export default class User {
   }
 
   addUser() {
+    console.log('User.addUser()')
     if (!this.errors.length) {
-      UsersCollection().insertOne(this.data);
+      // TODO: encrypt password
+      db.collection('users').insertOne(this.data);
     }
   }
 }

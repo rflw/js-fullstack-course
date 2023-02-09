@@ -9,6 +9,7 @@ export function logout() {
 }
 
 export function register(req, res) {
+  console.log('userController', 'register')
   const user = new User(req.body);
   user.register();
 
@@ -21,6 +22,7 @@ export function register(req, res) {
 }
 
 export function home(req, res) {
+  console.log('userController', 'home')
   // renders a view and sends the rendered HTML string to the client
   res.render('home-guest');
 }
