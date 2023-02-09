@@ -10,7 +10,6 @@ export function logout() {
 
 export function register(req, res) {
   const user = new User(req.body);
-
   user.register();
 
   if (user.errors.length) {

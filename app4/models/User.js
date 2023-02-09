@@ -1,4 +1,5 @@
 import validator from 'validator';
+import { UsersCollection } from '../db.js';
 
 export default class User {
   constructor(data) {
@@ -6,24 +7,24 @@ export default class User {
       throw new Error('No user data');
     }
 
-    this.data = data;
+    this.data = this.sanitize(data);
     this.errors = [];
   }
 
   register() {
-    this.cleanUp();
     this.validate();
+    this.addUser();
   }
 
-  cleanUp() {
+  sanitize(data) {
     const isString = value => typeof(value) !== 'string';
-    const userDataEntries = Object.entries(this.data).map(([key, value]) => {
+    const userDataEntries = Object.entries(data).map(([key, value]) => {
       return [key, isString(value) ? '' : value];
     });
 
     const userData = Object.fromEntries(userDataEntries);
 
-    this.data = {
+    return {
       name: userData.name.trim().toLowerCase(),
       email: userData.email.toLowerCase(),
       password: userData.password
@@ -49,6 +50,12 @@ export default class User {
 
     if (this.data.password > 0 && this.data.password < 12) {
       this.errors.push('Password: min length 12 characters')
+    }
+  }
+
+  addUser() {
+    if (!this.errors.length) {
+      UsersCollection().insertOne(this.data);
     }
   }
 }
