@@ -57,6 +57,7 @@ export default class User {
     console.log('User.addUser()')
     if (!this.errors.length) {
       // TODO: encrypt password
+      // TODO: check insert success or error
       db.collection('users').insertOne(this.data);
     }
   }
