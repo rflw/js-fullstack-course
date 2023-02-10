@@ -1,10 +1,9 @@
 import { MongoClient } from 'mongodb';
 
-const dbName = 'App4';
-const dbUrl = `mongodb://fullstack-mongodb/${dbName}`;
-const client = new MongoClient(dbUrl);
-
 async function dbConnect() {
+  const dbUrl = process.env.CONNNECTIONSTRING;
+  const client = new MongoClient(dbUrl);
+
   // TODO: add try..catch
   console.log('db connect')
   const dbClient = await client.connect();

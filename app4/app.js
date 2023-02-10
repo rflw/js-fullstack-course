@@ -1,6 +1,9 @@
 import express from 'express';
 import router from './router.js';
 import { dbConnect } from './db.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const db = await dbConnect();
 const app = express();
@@ -16,7 +19,7 @@ app.use('/', router); // binds routes
 app.set('views', 'views');
 app.set('view engine', 'ejs');
 
-app.listen(8000);
+app.listen(process.env.PORT);
 
 export {
   db,
