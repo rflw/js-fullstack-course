@@ -15,21 +15,41 @@
     Main content
   </main>
   <aside>
-    <form action="/register" method="POST" id="register-form">
-      <div>
-        <label for="username">User name</label>
-        <input type="text" name="name" id="username">
-      </div>
-      <div>
-        <label for="useremail">Email</label>
-        <input type="email" name="email" id="useremail">
-      </div>
-      <div>
-        <label for="userpassword">Password</label>
-        <input type="password" name="password" id="userpassword">
-      </div>
-      <button type="submit">Sign up</button>
-    </form>
+    <!-- Login form -->
+    <div>
+      <h2>Login</h2>
+      <form action="/login" method="POST">
+        <div class="field-group">
+          <label for="username">User name</label>
+          <input type="text" name="name" id="username">
+        </div>
+        <div class="field-group">
+          <label for="password">Email</label>
+          <input type="password" name="password" id="password">
+        </div>
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+    
+    <!-- Register form -->
+    <div>
+      <h2>Register</h2>
+      <form action="/register" method="POST" id="register-form">
+        <div class="field-group">
+          <label for="username">User name</label>
+          <input type="text" name="name" id="username">
+        </div>
+        <div class="field-group">
+          <label for="useremail">Email</label>
+          <input type="email" name="email" id="useremail">
+        </div>
+        <div class="field-group">
+          <label for="userpassword">Password</label>
+          <input type="password" name="password" id="userpassword">
+        </div>
+        <button type="submit">Sign up</button>
+      </form>
+    </div>
   </aside>
   <footer>
     <%= new Date().getFullYear() %>

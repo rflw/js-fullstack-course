@@ -1,7 +1,8 @@
 import User from '../models/User.js';
 
-export function login() {
-
+export function login(req, res) {
+  const user = new User(req.body);
+  user.login();
 }
 
 export function logout() {

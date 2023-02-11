@@ -1,4 +1,7 @@
-body {
-  border: 1px solid #aaa;
-  padding: 5px 10px;
+.field-group {
+  margin-top: 0.5em;
+}
+
+.field-group > * {
+  display: block
 }

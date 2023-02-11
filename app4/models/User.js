@@ -16,17 +16,39 @@ export default class User {
     this.addUser();
   }
 
+  async login() {
+    console.log('login');
+    const query = { name: this.data.name };
+
+    const { password } = await db.collection('users').findOne(query);
+
+    if (password !== this.data.password) {
+      console.log('Invalid username or password');
+      return;
+    }
+
+    console.log('Valid user');
+  }
+
   sanitize(data) {
     const isString = value => typeof(value) !== 'string';
+    const rules = {
+      name: (value) => value.trim().toLowerCase(),
+      email: (value) => value.trim().toLowerCase(),
+    };
+
     const userDataEntries = Object.entries(data).map(([key, value]) => {
-      return [key, isString(value) ? '' : value];
+      let sanitizedValue = rules[key] ? rules[key](value) : value;
+      return [key, isString(sanitizedValue) ? '' : sanitizedValue];
     });
 
     const userData = Object.fromEntries(userDataEntries);
 
+    // TODO: return only incoming data
+    // email is not passed on /login
     return {
-      name: userData.name.trim().toLowerCase(),
-      email: userData.email.toLowerCase(),
+      name: userData.name,
+      email: userData.email,
       password: userData.password
     }
   }
