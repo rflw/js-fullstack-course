@@ -1,8 +1,11 @@
 import User from '../models/User.js';
 
-export function login(req, res) {
+export async function login(req, res) {
   const user = new User(req.body);
-  user.login();
+  const isLoggedIn = await user.login();
+  const message = isLoggedIn ? "User logged in" : 'Invalid username or password';
+
+  res.send(message);
 }
 
 export function logout() {

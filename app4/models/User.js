@@ -24,10 +24,11 @@ export default class User {
 
     if (password !== this.data.password) {
       console.log('Invalid username or password');
-      return;
+      return false;
     }
 
     console.log('Valid user');
+    return true;
   }
 
   sanitize(data) {
