@@ -1,5 +1,6 @@
 import validator from 'validator';
 import { db } from '../app.js';
+import bcrypt from 'bcryptjs';
 
 export default class User {
   constructor(data) {
@@ -19,20 +20,25 @@ export default class User {
   async login() {
     console.log('login');
     const query = { name: this.data.name };
-
     const { password } = await db.collection('users').findOne(query);
 
-    if (password !== this.data.password) {
-      console.log('Invalid username or password');
+    if (!password) {
+      console.log('Missing password in db');
+    }
+
+    return this.isPasswordMatches(this.data.password, password);
+  }
+
+  isPasswordMatches(currentPassword, savedPassword) {
+    if (!currentPassword) {
       return false;
     }
 
-    console.log('Valid user');
-    return true;
+    return bcrypt.compareSync(currentPassword, savedPassword);
   }
 
   sanitize(data) {
-    const isString = value => typeof(value) !== 'string';
+    const isString = value => typeof(value) === 'string';
     const rules = {
       name: (value) => value.trim().toLowerCase(),
       email: (value) => value.trim().toLowerCase(),
@@ -40,7 +46,7 @@ export default class User {
 
     const userDataEntries = Object.entries(data).map(([key, value]) => {
       let sanitizedValue = rules[key] ? rules[key](value) : value;
-      return [key, isString(sanitizedValue) ? '' : sanitizedValue];
+      return [key, isString(sanitizedValue) ? sanitizedValue : ''];
     });
 
     const userData = Object.fromEntries(userDataEntries);
@@ -71,17 +77,32 @@ export default class User {
       this.errors.push('Missing password');
     }
 
-    if (this.data.password > 0 && this.data.password < 12) {
+    if (this.data.password.length > 0 && this.data.password.length < 12) {
       this.errors.push('Password: min length 12 characters')
+    }
+
+    if (this.data.password.length > 50) {
+      this.errors.push('Password: max length 50 characters')
     }
   }
 
   addUser() {
     console.log('User.addUser()')
-    if (!this.errors.length) {
-      // TODO: encrypt password
-      // TODO: check insert success or error
-      db.collection('users').insertOne(this.data);
+    if (this.errors.length) {
+      console.log('is error');
+      return;
     }
+
+    let data = this.data;
+    data.password = this.securePassword(this.data.password);
+
+    // TODO: check insert success or error
+    // TODO: check if a user with this name does not already exist in the database
+    db.collection('users').insertOne(this.data);
+  }
+
+  securePassword(password) {
+    let salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(password, salt);
   }
 }
