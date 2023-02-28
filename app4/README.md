@@ -9,4 +9,5 @@ Features:
   - configure settings (views, view engine)
 - form data validation
 - implement MVC (Model View Controller)
-- password hashing (bcryptjs)
+- password hashing (`bcryptjs`)
+- session (`express-session`)

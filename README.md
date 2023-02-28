@@ -14,6 +14,12 @@
 
 - Node.js version: 14
 
+Projects:
+- [app1](./app1-nodejs-server/index.js) - nodejs introduction
+- [app2](./app2-expressjs/index.js) - expressjs introduction
+- [app3](./app3-todo-app/index.js) - simple todo app (CRUD) #mongodb
+- [app4](./app4/app.js) - social media
+
 ## Configuration
 
 ### Database - Run MongoDB
@@ -30,7 +36,7 @@ mongodb://localhost:27017
 
 ### Issues
 
-### Nodejs cannot import ES modules without file extension
+#### Nodejs cannot import ES modules without file extension
 
 ```
 Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/app/route' imported from /app/index.js
@@ -42,7 +48,7 @@ Related to:
 - <https://stackoverflow.com/questions/64242186/node-cant-find-modules-without-js-extension>
 - <https://nodejs.org/dist/latest-v14.x/docs/api/esm.html#esm_resolution_algorithm>
 
-### Enable ES modules in node
+#### Enable ES modules in node
 
 Add ``type`: 'module`` in `package.json`.
 
